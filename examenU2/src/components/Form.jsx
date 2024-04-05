@@ -8,15 +8,38 @@ const Form = () => {
     const [genero, setGenero] = useState('')
     const [peso, setPeso] = useState('')
     const [altura, setAltura] = useState('')
+    
+    const [imcResultado, setImcResultado] = useState('');
 
     const handleSubmit = (e) => {
-        e.preventDefaul();
+        e.preventDefault();
+
+        const imc = (peso/((altura/100)*(altura/100))).toFixed(1);
+        console.log("Valor del IMC:", imc); 
+
+        let resultado="";
+        if (imc < 18.5) {
+            resultado = 'Bajo peso';
+        } else if (imc >= 18.5 && imc < 24.9) {
+            resultado = 'Peso Normal';
+        } else if (imc >= 25 && imc < 29.9) {
+            resultado = 'Sobrepeso';
+        } else if (imc >= 30 && imc < 34.9) {
+            resultado = 'Obesidad grado 1';
+        } else if (imc >= 35 && imc < 39.9) {
+            resultado = 'Obesidad grado 2';
+        } else {
+            resultado = 'Obesidad grado 3';
+        }
+
+        setImcResultado(resultado);
 
         const obtener = {
-            nama,
+            name,
             genero,
             peso,
-            altura
+            altura,
+            imc: resultado
         }
 
         setCimc([... cimc, obtener]);
@@ -25,34 +48,14 @@ const Form = () => {
         setGenero('');
         setPeso('');
         setAltura('');
+
+        document.getElementById('imcForm').reset();
     }
 
-    const imc = peso/(altura*altura);
+    
 
     const resultado = () => {
-        if(imc > 18.5){
-            console.log('Bajo peso')
-        }
-
-        if(imc > 18.5 || imc < 24.9){
-            console.log('Peso Normal')
-        }
-
-        if(imc > 25 || imc < 29.9){
-            console.log('Sobrepeso')
-        }
-
-        if(imc > 30 || imc < 34.9){
-            console.log('Obesidad grado 1')
-        }
-
-        if(imc > 35 || imc < 39.9){
-            console.log('Obesidad grado 2')
-        }
-
-        if(imc > 40){
-            console.log('Obesidad grado 3')
-        }
+        
     }
 
     return (
@@ -92,10 +95,10 @@ const Form = () => {
 
             </form>
 
-            <div id='resultado'>
-                <label htmlFor="" className="text-gray-600">
-
-                </label>
+            <div id='resultado'  className="text-gray-600">
+                
+            {imcResultado && <p>Resultado del IMC: {imcResultado}</p>}
+            
             </div>
 
         </div>
